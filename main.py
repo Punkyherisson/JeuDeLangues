@@ -1,0 +1,106 @@
+import tkinter as tk
+from tkinter import ttk
+import json
+import random
+
+# Charger les couleurs
+with open("colors.json", "r", encoding="utf-8") as f:
+    colors_data = json.load(f)["colors"]
+
+LANGUAGES = {
+    "Français": "fr",
+    "Anglais": "en",
+    "Allemand": "de",
+    "Espagnol": "es"
+}
+
+# Créer dictionnaire inversé pour l'anglais
+for color in list(colors_data.keys()):
+    colors_data[color]["en"] = color
+
+class ColorQuizApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Quiz Couleurs Multilingue")
+        self.score = 0
+        self.total = 0
+
+        self.source_lang = tk.StringVar(value="Anglais")
+        self.target_lang = tk.StringVar(value="Français")
+
+        self.setup_menu()
+        self.setup_quiz()
+
+    def setup_menu(self):
+        frame = tk.Frame(self.root)
+        frame.pack(pady=10)
+
+        tk.Label(frame, text="Langue source :").grid(row=0, column=0)
+        self.source_menu = ttk.Combobox(frame, textvariable=self.source_lang, values=list(LANGUAGES.keys()), state="readonly")
+        self.source_menu.grid(row=0, column=1)
+
+        tk.Label(frame, text="Langue cible :").grid(row=1, column=0)
+        self.target_menu = ttk.Combobox(frame, textvariable=self.target_lang, values=list(LANGUAGES.keys()), state="readonly")
+        self.target_menu.grid(row=1, column=1)
+
+        tk.Button(frame, text="Démarrer le quiz", command=self.start_quiz).grid(row=2, column=0, columnspan=2, pady=5)
+
+    def setup_quiz(self):
+        self.quiz_frame = tk.Frame(self.root)
+
+        self.question_label = tk.Label(self.quiz_frame, text="", font=("Arial", 16))
+        self.question_label.pack(pady=10)
+
+        self.entry = tk.Entry(self.quiz_frame, font=("Arial", 14))
+        self.entry.pack()
+
+        self.submit_btn = tk.Button(self.quiz_frame, text="Valider", command=self.check_answer)
+        self.submit_btn.pack(pady=5)
+
+        self.feedback = tk.Label(self.quiz_frame, text="", font=("Arial", 14))
+        self.feedback.pack()
+
+        self.score_label = tk.Label(self.quiz_frame, text="Score : 0/0", font=("Arial", 12))
+        self.score_label.pack()
+
+    def start_quiz(self):
+        self.src = LANGUAGES[self.source_lang.get()]
+        self.tgt = LANGUAGES[self.target_lang.get()]
+
+        if self.src == self.tgt:
+            self.feedback.config(text="❌ Langue source et cible identiques !", fg="red")
+            return
+
+        self.score = 0
+        self.total = 0
+        self.quiz_frame.pack(pady=10)
+        self.ask_question()
+
+    def ask_question(self):
+        self.current_word = random.choice(list(colors_data.keys()))
+        self.current_answer = colors_data[self.current_word][self.tgt]
+        self.question_text = colors_data[self.current_word][self.src]
+
+        self.question_label.config(text=f"Traduire : {self.question_text}")
+        self.entry.delete(0, tk.END)
+        self.feedback.config(text="")
+
+    def check_answer(self):
+        user_input = self.entry.get().strip().lower()
+        correct = self.current_answer.lower()
+
+        self.total += 1
+        if user_input == correct:
+            self.score += 1
+            self.feedback.config(text="✅ Correct !", fg="green")
+        else:
+            self.feedback.config(text=f"❌ Faux ! Rép. : {self.current_answer}", fg="red")
+
+        self.score_label.config(text=f"Score : {self.score}/{self.total}")
+        self.root.after(1500, self.ask_question)
+
+# Lancer l'application
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = ColorQuizApp(root)
+    root.mainloop()

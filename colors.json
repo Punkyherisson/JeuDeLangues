@@ -1,0 +1,15 @@
+{
+  "colors": {
+    "red": {"fr": "rouge", "de": "rot", "es": "rojo"},
+    "blue": {"fr": "bleu", "de": "blau", "es": "azul"},
+    "green": {"fr": "vert", "de": "grün", "es": "verde"},
+    "yellow": {"fr": "jaune", "de": "gelb", "es": "amarillo"},
+    "black": {"fr": "noir", "de": "schwarz", "es": "negro"},
+    "white": {"fr": "blanc", "de": "weiß", "es": "blanco"},
+    "orange": {"fr": "orange", "de": "orange", "es": "naranja"},
+    "pink": {"fr": "rose", "de": "rosa", "es": "rosa"},
+    "purple": {"fr": "violet", "de": "lila", "es": "morado"},
+    "brown": {"fr": "marron", "de": "braun", "es": "marrón"},
+    "grey": {"fr": "gris", "de": "grau", "es": "gris"}
+  }
+}

@@ -1,0 +1,39 @@
+
+[
+    {
+        "question": "What is the French word for 'cat'?",
+        "answer": "chat"
+    },
+    {
+        "question": "What is the French word for 'dog'?",
+        "answer": "chien"
+    },
+    {
+        "question": "What is the French word for 'apple'?",
+        "answer": "pomme"
+    },
+    {
+        "question": "What is the French word for 'house'?",
+        "answer": "maison"
+    },
+    {
+        "question": "What is the French word for 'car'?",
+        "answer": "voiture"
+    },
+    {
+        "question": "What is the French word for 'book'?",
+        "answer": "livre"
+    },
+    {
+        "question": "What is the French word for 'tree'?",
+        "answer": "arbre"
+    },
+    {
+        "question": "What is the French word for 'water'?",
+        "answer": "eau"
+    },
+    {
+        "question": "What is the French word for 'sun'?",
+        "answer": "soleil"
+    }
+]
