@@ -1,0 +1,19 @@
+{
+  "themes": {
+    "Couleurs": {
+      "red": {"fr": "rouge", "de": "rot", "es": "rojo"},
+      "blue": {"fr": "bleu", "de": "blau", "es": "azul"},
+      "green": {"fr": "vert", "de": "grün", "es": "verde"}
+    },
+    "Animaux": {
+      "cat": {"fr": "chat", "de": "Katze", "es": "gato"},
+      "dog": {"fr": "chien", "de": "Hund", "es": "perro"},
+      "bird": {"fr": "oiseau", "de": "Vogel", "es": "pájaro"}
+    },
+    "Nourriture": {
+      "apple": {"fr": "pomme", "de": "Apfel", "es": "manzana"},
+      "bread": {"fr": "pain", "de": "Brot", "es": "pan"},
+      "cheese": {"fr": "fromage", "de": "Käse", "es": "queso"}
+    }
+  }
+}
