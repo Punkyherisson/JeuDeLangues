@@ -16,6 +16,8 @@ class ColorQuizApp:
         self.root.title("Quiz Multilingue")
         self.score = 0
         self.total = 0
+        self.asked_questions = set()
+
         self.theme = tk.StringVar(value="Couleurs")
         self.source_lang = tk.StringVar(value="Anglais")
         self.target_lang = tk.StringVar(value="Français")
@@ -65,7 +67,7 @@ class ColorQuizApp:
         self.feedback = tk.Label(self.quiz_frame, text="", font=("Arial", 14))
         self.feedback.pack()
 
-        self.score_label = tk.Label(self.quiz_frame, text="Score : 0/0", font=("Arial", 12))
+        self.score_label = tk.Label(self.quiz_frame, text="Score : 0", font=("Arial", 12))
         self.score_label.pack()
 
     def start_quiz(self):
@@ -78,19 +80,29 @@ class ColorQuizApp:
             return
 
         self.current_data = self.all_data[selected_theme]
-
-        # Ajouter anglais comme clé si manquant
         for word in self.current_data:
             self.current_data[word]["en"] = word
 
+        self.words_list = list(self.current_data.keys())
+        self.asked_questions.clear()
         self.score = 0
         self.total = 0
-        self.quiz_frame.pack_forget()  # Réinitialise le frame
+
+        self.quiz_frame.pack_forget()
         self.quiz_frame.pack(pady=10)
         self.ask_question()
 
     def ask_question(self):
-        self.current_word = random.choice(list(self.current_data.keys()))
+        if len(self.asked_questions) == len(self.words_list):
+            self.question_label.config(text="🎉 Fin du quiz !")
+            self.submit_btn.config(state="disabled")
+            self.entry.config(state="disabled")
+            return
+
+        remaining_words = list(set(self.words_list) - self.asked_questions)
+        self.current_word = random.choice(remaining_words)
+        self.asked_questions.add(self.current_word)
+
         self.question_text = self.current_data[self.current_word].get(self.src, self.current_word)
         self.current_answer = self.current_data[self.current_word].get(self.tgt, self.current_word)
 
@@ -101,15 +113,16 @@ class ColorQuizApp:
     def check_answer(self):
         user_input = self.entry.get().strip().lower()
         correct = self.current_answer.lower()
-
         self.total += 1
+
         if user_input == correct:
-            self.score += 1
+            self.score += 10
             self.feedback.config(text="✅ Correct !", fg="green")
         else:
+            self.score = max(0, self.score - 5)
             self.feedback.config(text=f"❌ Faux ! Rép. : {self.current_answer}", fg="red")
 
-        self.score_label.config(text=f"Score : {self.score}/{self.total}")
+        self.score_label.config(text=f"Score : {self.score}")
         self.root.after(1500, self.ask_question)
 
 # Lancer l'application
