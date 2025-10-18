@@ -14,6 +14,14 @@
       "apple": {"fr": "pomme", "de": "Apfel", "es": "manzana"},
       "bread": {"fr": "pain", "de": "Brot", "es": "pan"},
       "cheese": {"fr": "fromage", "de": "Käse", "es": "queso"}
+    },
+    "Transport": {
+      "car": {"fr": "voiture", "de": "Auto", "es": "coche"},
+      "plane": {"fr": "avion", "de": "Flugzeug", "es": "avión"},
+      "bicycle": {"fr": "vélo", "de": "Fahrrad", "es": "bicicleta"},
+      "subway": {"fr": "métro", "de": "U-Bahn", "es": "metro"},
+      "motorcycle": {"fr": "moto", "de": "Motorrad", "es": "motocicleta"},
+      "bus": {"fr": "bus", "de": "Bus", "es": "autobús"}
     }
   }
 }
