@@ -10,13 +10,14 @@ import tkinter as tk
 from tkinter import ttk
 import json
 import random
-
+#langues disponibles
 LANGUAGES = {
     "Français": "fr",
     "Anglais": "en",
     "Allemand": "de",
     "Espagnol": "es"
 }
+
 
 class ColorQuizApp:
     """
@@ -34,7 +35,7 @@ class ColorQuizApp:
         source_lang: Langue source pour les questions
         target_lang: Langue cible pour les réponses
     """
-    
+
     def __init__(self, root):
         """
         Initialise l'application de quiz.
@@ -69,19 +70,36 @@ class ColorQuizApp:
         frame.pack(pady=10)
 
         tk.Label(frame, text="Langue source :").grid(row=0, column=0)
-        self.source_menu = ttk.Combobox(frame, textvariable=self.source_lang, values=list(LANGUAGES.keys()), state="readonly")
+        self.source_menu = ttk.Combobox(frame,
+                                        textvariable=self.source_lang,
+                                        values=list(LANGUAGES.keys()),
+                                        state="readonly")
         self.source_menu.grid(row=0, column=1)
 
         tk.Label(frame, text="Langue cible :").grid(row=1, column=0)
-        self.target_menu = ttk.Combobox(frame, textvariable=self.target_lang, values=list(LANGUAGES.keys()), state="readonly")
+        self.target_menu = ttk.Combobox(frame,
+                                        textvariable=self.target_lang,
+                                        values=list(LANGUAGES.keys()),
+                                        state="readonly")
         self.target_menu.grid(row=1, column=1)
 
         tk.Label(frame, text="Thème :").grid(row=2, column=0)
-        self.theme_menu = ttk.Combobox(frame, textvariable=self.theme, values=[], state="readonly")
+        self.theme_menu = ttk.Combobox(frame,
+                                       textvariable=self.theme,
+                                       values=[],
+                                       state="readonly")
         self.theme_menu.grid(row=2, column=1)
 
-        tk.Button(frame, text="Démarrer le quiz", command=self.start_quiz).grid(row=3, column=0, columnspan=2, pady=5)
-        tk.Button(frame, text="Quitter", command=self.root.quit).grid(row=4, column=0, columnspan=2, pady=5)
+        tk.Button(frame, text="Démarrer le quiz",
+                  command=self.start_quiz).grid(row=3,
+                                                column=0,
+                                                columnspan=2,
+                                                pady=5)
+        tk.Button(frame, text="Quitter",
+                  command=self.root.quit).grid(row=4,
+                                               column=0,
+                                               columnspan=2,
+                                               pady=5)
 
     def load_themes(self):
         """
@@ -109,19 +127,25 @@ class ColorQuizApp:
         """
         self.quiz_frame = tk.Frame(self.root)
 
-        self.question_label = tk.Label(self.quiz_frame, text="", font=("Arial", 16))
+        self.question_label = tk.Label(self.quiz_frame,
+                                       text="",
+                                       font=("Arial", 16))
         self.question_label.pack(pady=10)
 
         self.entry = tk.Entry(self.quiz_frame, font=("Arial", 14))
         self.entry.pack()
 
-        self.submit_btn = tk.Button(self.quiz_frame, text="Valider", command=self.check_answer)
+        self.submit_btn = tk.Button(self.quiz_frame,
+                                    text="Valider",
+                                    command=self.check_answer)
         self.submit_btn.pack(pady=5)
 
         self.feedback = tk.Label(self.quiz_frame, text="", font=("Arial", 14))
         self.feedback.pack()
 
-        self.score_label = tk.Label(self.quiz_frame, text="Score : 0", font=("Arial", 12))
+        self.score_label = tk.Label(self.quiz_frame,
+                                    text="Score : 0",
+                                    font=("Arial", 12))
         self.score_label.pack()
 
     def start_quiz(self):
@@ -137,7 +161,8 @@ class ColorQuizApp:
         selected_theme = self.theme.get()
 
         if self.src == self.tgt:
-            self.feedback.config(text="❌ Langue source et cible identiques !", fg="red")
+            self.feedback.config(text="❌ Langue source et cible identiques !",
+                                 fg="red")
             return
 
         self.current_data = self.all_data[selected_theme]
@@ -171,8 +196,10 @@ class ColorQuizApp:
         self.current_word = random.choice(remaining_words)
         self.asked_questions.add(self.current_word)
 
-        self.question_text = self.current_data[self.current_word].get(self.src, self.current_word)
-        self.current_answer = self.current_data[self.current_word].get(self.tgt, self.current_word)
+        self.question_text = self.current_data[self.current_word].get(
+            self.src, self.current_word)
+        self.current_answer = self.current_data[self.current_word].get(
+            self.tgt, self.current_word)
 
         self.question_label.config(text=f"Traduire : {self.question_text}")
         self.entry.delete(0, tk.END)
@@ -195,10 +222,12 @@ class ColorQuizApp:
             self.feedback.config(text="✅ Correct !", fg="green")
         else:
             self.score = max(0, self.score - 5)
-            self.feedback.config(text=f"❌ Faux ! Rép. : {self.current_answer}", fg="red")
+            self.feedback.config(text=f"❌ Faux ! Rép. : {self.current_answer}",
+                                 fg="red")
 
         self.score_label.config(text=f"Score : {self.score}")
         self.root.after(1500, self.ask_question)
+
 
 # Lancer l'application
 if __name__ == "__main__":
