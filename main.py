@@ -1,3 +1,11 @@
+"""
+Application de quiz multilingue pour l'apprentissage du vocabulaire.
+
+Ce module permet de créer des quiz interactifs pour apprendre le vocabulaire
+en français, allemand et espagnol à travers différents thèmes (couleurs, animaux,
+nourriture, transport).
+"""
+
 import tkinter as tk
 from tkinter import ttk
 import json
@@ -11,7 +19,29 @@ LANGUAGES = {
 }
 
 class ColorQuizApp:
+    """
+    Application de quiz multilingue avec interface graphique Tkinter.
+    
+    Cette classe gère l'interface utilisateur et la logique du quiz pour
+    l'apprentissage de vocabulaire dans plusieurs langues.
+    
+    Attributs:
+        root: La fenêtre principale Tkinter
+        score: Score actuel du joueur
+        total: Nombre total de questions posées
+        asked_questions: Ensemble des questions déjà posées
+        theme: Thème sélectionné (Couleurs, Animaux, Nourriture, Transport)
+        source_lang: Langue source pour les questions
+        target_lang: Langue cible pour les réponses
+    """
+    
     def __init__(self, root):
+        """
+        Initialise l'application de quiz.
+        
+        Args:
+            root: La fenêtre principale Tkinter
+        """
         self.root = root
         self.root.title("Quiz Multilingue")
         self.score = 0
@@ -27,6 +57,14 @@ class ColorQuizApp:
         self.setup_quiz()
 
     def setup_menu(self):
+        """
+        Configure le menu principal avec les sélecteurs de langue et de thème.
+        
+        Crée une interface avec des menus déroulants pour choisir:
+        - La langue source (langue que l'utilisateur connaît)
+        - La langue cible (langue à apprendre)
+        - Le thème du quiz (Couleurs, Animaux, Nourriture, Transport)
+        """
         frame = tk.Frame(self.root)
         frame.pack(pady=10)
 
@@ -46,6 +84,12 @@ class ColorQuizApp:
         tk.Button(frame, text="Quitter", command=self.root.quit).grid(row=4, column=0, columnspan=2, pady=5)
 
     def load_themes(self):
+        """
+        Charge les données de vocabulaire depuis le fichier quiz_data.json.
+        
+        Lit le fichier JSON contenant tous les thèmes et leur vocabulaire,
+        puis remplit le menu déroulant des thèmes disponibles.
+        """
         with open("quiz_data.json", "r", encoding="utf-8") as f:
             data = json.load(f)
         self.all_data = data["themes"]
@@ -53,6 +97,16 @@ class ColorQuizApp:
         self.theme.set(list(self.all_data.keys())[0])
 
     def setup_quiz(self):
+        """
+        Configure l'interface du quiz.
+        
+        Crée les éléments d'interface pour afficher:
+        - La question/mot à traduire
+        - Le champ de saisie pour la réponse
+        - Le bouton de validation
+        - Le retour visuel (correct/incorrect)
+        - L'affichage du score
+        """
         self.quiz_frame = tk.Frame(self.root)
 
         self.question_label = tk.Label(self.quiz_frame, text="", font=("Arial", 16))
@@ -71,6 +125,13 @@ class ColorQuizApp:
         self.score_label.pack()
 
     def start_quiz(self):
+        """
+        Démarre une nouvelle session de quiz.
+        
+        Initialise le quiz avec le thème et les langues sélectionnés.
+        Vérifie que la langue source et cible sont différentes.
+        Réinitialise le score et commence à poser les questions.
+        """
         self.src = LANGUAGES[self.source_lang.get()]
         self.tgt = LANGUAGES[self.target_lang.get()]
         selected_theme = self.theme.get()
@@ -93,6 +154,13 @@ class ColorQuizApp:
         self.ask_question()
 
     def ask_question(self):
+        """
+        Affiche la prochaine question du quiz.
+        
+        Sélectionne aléatoirement un mot parmi ceux qui n'ont pas encore été posés.
+        Si toutes les questions ont été posées, affiche le message de fin.
+        Prépare l'interface pour la nouvelle question.
+        """
         if len(self.asked_questions) == len(self.words_list):
             self.question_label.config(text="🎉 Fin du quiz !")
             self.submit_btn.config(state="disabled")
@@ -111,6 +179,13 @@ class ColorQuizApp:
         self.feedback.config(text="")
 
     def check_answer(self):
+        """
+        Vérifie la réponse de l'utilisateur et met à jour le score.
+        
+        Compare la réponse saisie avec la traduction correcte.
+        Ajoute 10 points pour une bonne réponse, retire 5 points pour une mauvaise.
+        Affiche un retour visuel et passe à la question suivante après 1,5 seconde.
+        """
         user_input = self.entry.get().strip().lower()
         correct = self.current_answer.lower()
         self.total += 1
